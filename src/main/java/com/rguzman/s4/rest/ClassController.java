@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rguzman.s4.model.Class_;
+import com.rguzman.s4.model.Student;
 import com.rguzman.s4.rest.response.ServiceResponse;
 import com.rguzman.s4.service.ClassService;
 
@@ -127,11 +128,45 @@ public class ClassController {
 	}
 	
 	@GetMapping("/class")
-	public ResponseEntity<List<Class_>> listStudent( HttpServletRequest request) 
+	public ResponseEntity<List<Class_>> listClasses( HttpServletRequest request) 
 	{
 		
 		return new ResponseEntity<>(classService.listClasses(), HttpStatus.OK);
 	}
 	
+	
+	@GetMapping("/class/{code}/students")
+	public ResponseEntity<List<Student>> listStudents(@PathVariable(value="code") String code, HttpServletRequest request) 
+	{
+		
+		return new ResponseEntity<>(classService.listStudents(code), HttpStatus.OK);
+	}
+	
+	
+	@PutMapping("/class/{code}/assignStudents")
+	public ResponseEntity<ServiceResponse> assignStudents(@PathVariable(value="code") String code, @RequestBody List<Integer> studentIds, HttpServletRequest request) 
+	{
+		ServiceResponse serviceResponse = new ServiceResponse();
+		
+		if(code!=null && studentIds!=null && studentIds.size()>0)
+		{
+			try {
+				classService.assignStudents(code, studentIds);
+			}
+			catch (Exception e) {
+				serviceResponse.setErrorCode("500");
+				serviceResponse.setErrorMessage(e.getMessage());
+				return new ResponseEntity<>(serviceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+		else
+		{
+			serviceResponse.setErrorCode("400");
+			serviceResponse.setErrorMessage("Parameter error");
+			return new ResponseEntity<>(serviceResponse, HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
+	}
 	
 }

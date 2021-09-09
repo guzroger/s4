@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude( Include.NON_NULL)
 public class ServiceResponse {
-	private String errorCode;
-	private String errorMessage;
+	private String errorCode = "0" ;
+	private String errorMessage = "OK";
 	public String getErrorCode() {
 		return errorCode;
 	}

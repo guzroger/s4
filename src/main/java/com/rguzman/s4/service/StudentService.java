@@ -2,6 +2,7 @@ package com.rguzman.s4.service;
 
 import java.util.List;
 
+import com.rguzman.s4.model.Class_;
 import com.rguzman.s4.model.Student;
 
 public interface StudentService {
@@ -10,5 +11,6 @@ public interface StudentService {
 	public Student createStudent(Student student);
 	public Student modifyStudent(Student student);
 	public void deleteStudent(Integer studentId);
+	public List<Class_> listClasses(Integer studentId);
 	
 }
